@@ -20,7 +20,7 @@ Then build udev file
 sudo vim /etc/udev/rules.d/unitree_usb.rules
 ```
 
-and write
+and write 
 ```
 KERNEL=="ttyUSB*", ATTRS{devpath}=="1.1", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", MODE:="0777",SYMLINK+="unitree_usb0"
 KERNEL=="ttyUSB*", ATTRS{devpath}=="1.2", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", MODE:="0777",SYMLINK+="unitree_usb1"
@@ -28,3 +28,9 @@ KERNEL=="ttyUSB*", ATTRS{devpath}=="1.3", ATTRS{idVendor}=="0403", ATTRS{idProdu
 KERNEL=="ttyUSB*", ATTRS{devpath}=="1.4", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", MODE:="0777",SYMLINK+="unitree_usb3"
 ```
 
+After rebbot, check the serial port name
+```
+$ ls -l /dev | grep ttyUSB
+crwxrwxrwx   1 root        dialout 188,     0 11月  4 15:04 ttyUSB0
+lrwxrwxrwx   1 root        root             7 11月  4 15:04 unitree_usb0 -> ttyUSB0
+```
