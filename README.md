@@ -5,19 +5,19 @@ Some examples for Unitree motor real-time control.
 In this case, multiple serial ports haved to be used for high bandwide motor control, so distinction is required.
 
 Plug in a USB device, and run the following line to get `devpath` infomation for distinction
-```
-udevadm info --attribute-walk /sys/class/tty/ttyUSB0 | grep devpath
+```console
+$ udevadm info --attribute-walk /sys/class/tty/ttyUSB0 | grep devpath
 ```
 
 `idVendor` and `idProduct` infomation also needed, run
-```
-udevadm info --attribute-walk /sys/class/tty/ttyUSB0 | grep idVendor
-udevadm info --attribute-walk /sys/class/tty/ttyUSB0 | grep idProduct
+```console
+$ udevadm info --attribute-walk /sys/class/tty/ttyUSB0 | grep idVendor
+$ udevadm info --attribute-walk /sys/class/tty/ttyUSB0 | grep idProduct
 ```
 
 Then build udev file
-```
-sudo vim /etc/udev/rules.d/unitree_usb.rules
+```console
+$ sudo vim /etc/udev/rules.d/unitree_usb.rules
 ```
 
 and write 
@@ -29,7 +29,7 @@ KERNEL=="ttyUSB*", ATTRS{devpath}=="1.4", ATTRS{idVendor}=="0403", ATTRS{idProdu
 ```
 
 After rebbot, check the serial port name
-```
+```console
 $ ls -l /dev | grep ttyUSB
 crwxrwxrwx   1 root        dialout 188,     0 11月  4 15:04 ttyUSB0
 lrwxrwxrwx   1 root        root             7 11月  4 15:04 unitree_usb0 -> ttyUSB0
