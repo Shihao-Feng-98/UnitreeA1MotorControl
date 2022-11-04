@@ -17,6 +17,6 @@ udevadm info --attribute-walk /sys/class/tty/ttyUSB0 | grep idProduct
 
 Then write udev file
 ```
-sudo vim /etc/udev/rule.d/unitree_usb.rules
+sudo vim /etc/udev/rules.d/unitree_usb.rules
 ```
 
