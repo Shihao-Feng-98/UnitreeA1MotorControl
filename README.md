@@ -15,8 +15,16 @@ udevadm info --attribute-walk /sys/class/tty/ttyUSB0 | grep idVendor
 udevadm info --attribute-walk /sys/class/tty/ttyUSB0 | grep idProduct
 ```
 
-Then write udev file
+Then build udev file
 ```
 sudo vim /etc/udev/rules.d/unitree_usb.rules
+```
+
+and write
+```
+KERNEL=="ttyUSB*", ATTRS{devpath}=="1.1", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", MODE:="0777",SYMLINK+="unitree_usb0"
+KERNEL=="ttyUSB*", ATTRS{devpath}=="1.2", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", MODE:="0777",SYMLINK+="unitree_usb1"
+KERNEL=="ttyUSB*", ATTRS{devpath}=="1.3", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", MODE:="0777",SYMLINK+="unitree_usb2"
+KERNEL=="ttyUSB*", ATTRS{devpath}=="1.4", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", MODE:="0777",SYMLINK+="unitree_usb3"
 ```
 
