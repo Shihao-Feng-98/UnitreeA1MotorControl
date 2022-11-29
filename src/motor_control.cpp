@@ -8,7 +8,6 @@
 88  88  88 `8b  d8'    88    `8b  d8' 88 `88. 
 YP  YP  YP  `Y88P'     YP     `Y88P'  88   YD 
 */
-
 MotorControl::MotorControl(SerialPort* serial_ptr, unsigned short id, double offset)
 {
     this->_serial_ptr = serial_ptr;
@@ -30,7 +29,7 @@ bool MotorControl::_cmd_is_safe(double tau_d, double dq_d, double q_d, double kp
         cout << "[Motor " << _motor_s.id << "]: dq_d safety error\n";
         return false;
     } 
-    if (fabs(q_d) >= 2*M_PI){ // TODO: change
+    if (fabs(q_d) >= M_PI){ 
         cout << "[Motor " << _motor_s.id << "]: q_d safety error\n";
         return false;
     } 
@@ -114,157 +113,159 @@ db      d88888b  d888b
 88booo. 88.     88. ~8~ 
 Y88888P Y88888P  Y888P  
 */
-// LegControl::LegControl(SerialPort* serial_ptr, vector<double> offset_list, LegType leg)
-// {
-//     // private menber
-//     this->serial_ptr = serial_ptr;
-//     this->offset_list = offset_list;
-//     this->motors = vector<MotorControl*>(3);
-//     this->motors[0] = new MotorControl(this->serial_ptr, 0, this->offset_list[0]);
-//     this->motors[1] = new MotorControl(this->serial_ptr, 1, this->offset_list[1]);
-//     this->motors[2] = new MotorControl(this->serial_ptr, 2, this->offset_list[2]);
-//     this->leg_type = leg;
-//     this->kine_ptr = new LegKinematicsBennett(this->leg_type);
-//     switch (this->leg_type)
-//     {
-//         case LegType::FR:
-//             axis_transfer << 1., -1., -1.;
-//             break;
-//         case LegType::FL:
-//             axis_transfer << 1., 1., 1.;
-//             break;
-//         case LegType::RR:
-//             axis_transfer << -1., -1., -1.;
-//             break;
-//         case LegType::RL:
-//             axis_transfer << -1., 1., 1.;
-//             break;
-//     }
-//     // pubulic member
-//     temp_list = vector<double>(3, 0.);
-//     tau.setZero();
-//     dq.setZero();
-//     q.setZero();
-//     foot_force.setZero(); 
-//     foot_vel.setZero(); 
-//     foot_pos.setZero();
-//     jacobian.setIdentity();
-//     // init leg states
-//     this->stop();
-// }
+LegControl::LegControl(SerialPort* serial_ptr, vector<double> offset_vec, LegType leg)
+{
+    this->_serial_ptr = serial_ptr;
+    this->_offset_vec = offset_vec;
+    this->leg_type = leg;
+    switch (this->leg_type)
+    {
+        case LegType::FR:
+            _pos_mapping << 1., 0., 0.,
+                            0., 0., -1.,
+                            0., -1., 1.;
+            _pos_inv_mapping << 1., 0., 0.,
+                                0., -1., -1., 
+                                -1., 0., 0.;
+            break;
+        case LegType::FL:
+            _pos_mapping << 1., 0., 0.,
+                            0., 1., 0.,
+                            0., -1., 1.;
+            _pos_inv_mapping << 1., 0., 0.,
+                                0., 1., 0.,
+                                0., 1., 1.;
+            break;
+        case LegType::RR:
+            _pos_mapping << -1., 0., 0.,
+                            0.,  0., -1.,
+                            0., -1., 1.;
+            _pos_inv_mapping << -1., 0., 0.,
+                                0., -1., -1.,
+                                0., -1, 0.;
+            break;
+        case LegType::RL:
+            _pos_mapping << -1., 0., 0., 
+                            0., 1., 0., 
+                            0., -1., 1.;
+            _pos_inv_mapping << -1., 0., 0.,
+                                0., 1., 0.,
+                                0., 1., 1.;
+            break;
+    }
+    // Linear mapping -> pos mapping = vel mapping
+    _vel_mapping = _pos_mapping;
+    _vel_inv_mapping = _pos_inv_mapping;
 
-// LegControl::~LegControl()
-// {
-//     for (auto motor_ptr : motors) {delete motor_ptr;}
-//     delete kine_ptr;
-// }
+    this->_motors = vector<MotorControl*>(3);
+    this->_motors[0] = new MotorControl(this->_serial_ptr, 0, this->_offset_vec[0]);
+    this->_motors[1] = new MotorControl(this->_serial_ptr, 1, this->_offset_vec[1]);
+    this->_motors[2] = new MotorControl(this->_serial_ptr, 2, this->_offset_vec[2]);
+    // pubulic member
+    temp_vec = vector<double>(3, 0.);
+    tau.setZero();
+    dq.setZero();
+    q.setZero();
+    // init leg states
+    this->stop();
+}
 
-// bool LegControl::cmd_is_safe(Vector3d q_d)
-// {
-//     // phi0
-//     if ((leg_type == LegType::FL) || (leg_type == LegType::RL)) 
-//     {
-//         if ((q_d(0) < -10./180.*M_PI) || (q_d(0) > 90./180.*M_PI)) 
-//         {
-//             cout << "[Leg" << (int)leg_type << " cmd]: phi0 safety error\n"; 
-//             return false;
-//         }
-//     }
-//     else // LegType::FR || LegType::RR
-//     {
-//         if ((q_d(0) < -90./180.*M_PI) || (q_d(0) > 10./180.*M_PI)) 
-//         {
-//             cout << "[Leg" << (int)leg_type << " cmd]: phi0 safety error\n"; 
-//             return false;
-//         }
-//     }
-//     // phi1
-//     if (fabs(q_d(1)) > 80./180.*M_PI) 
-//     {
-//         cout << "[Leg" << (int)leg_type << " cmd]: phi1 safety error\n"; 
-//         return false;
-//     }
-//     // phi2
-//     if (fabs(q_d(1)+q_d(2)) > 80./180.*M_PI) 
-//     {
-//         cout << "[Leg" << (int)leg_type << " cmd]: phi2 safety error\n"; 
-//         return false;
-//     }
-//     // eta
-//     if ((q_d(2) > ETA_MAX) || (q_d(2) < ETA_MIN)) 
-//     {
-//         cout << "[Leg" << (int)leg_type << " cmd]: eta safety error\n"; 
-//         return false;
-//     }
+LegControl::~LegControl()
+{
+    for (auto motor_ptr : _motors) {delete motor_ptr;}
+}
 
-//     return true;
-// }
+bool LegControl::_cmd_is_safe(Vector3d q_d)
+{
+    // phi0
+    if ((leg_type == LegType::FL) || (leg_type == LegType::RL)) {
+        if ((q_d(0) < X_ALONG_ANGLE_MIN) || (q_d(0) > X_ALONG_ANGLE_MAX)) {
+            cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
+            return false;
+        }
+    }
+    else {
+        if ((q_d(0) < -X_ALONG_ANGLE_MAX) || (q_d(0) > X_ALONG_ANGLE_MIN)) {
+            cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
+            return false;
+        }
+    }
+    // phi1 and phi2
+    if ((fabs(q_d(1)) > Y_ALONG_ANGLE_LIMIT) || (fabs(q_d(2)) > Y_ALONG_ANGLE_LIMIT)) {
+        cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
+        return false;
+    }
+    // eta = phi1 - phi2
+    if (((q_d(2)-q_d(1)) > ETA_MAX) || ((q_d(2)-q_d(1)) < ETA_MIN)) {
+        cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n";  
+        return false;
+    }
 
-// void LegControl::extract()
-// {
-//     // update motor states
-//     for (int i = 0; i < 3; i++)
-//     {
-//         temp_list[i] = motors[i]->temp;
-//         // from actual motor states to theoretical motor states
-//         tau(i) = axis_transfer(i) * motors[i]->tau;
-//         dq(i) = axis_transfer(i) * motors[i]->dq;
-//         q(i) = axis_transfer(i) * motors[i]->q;
-//     }
-//     // update foot states
-//     foot_pos = kine_ptr->FK_motor(q).block<3,1>(0,3);
-//     jacobian = kine_ptr->Jacobian_motor(q);
-//     foot_vel = jacobian * dq;
-//     foot_force = jacobian.inverse() * tau;
-// }
+    return true;
+}
 
-// bool LegControl::stop()
-// {
-//     for (auto motor_ptr : motors)
-//     {
-//         if (!motor_ptr->stop()) {return false;}
-//     }
-//     this->extract();
-//     return true;
-// }
+void LegControl::_extract()
+{
+    Vector3d tau_motor, dq_motor, q_motor;
+    // update motor states
+    for (int i = 0; i < 3; i++){
+        temp_vec[i] = _motors[i]->temp;
+        // from actual motor states to theoretical motor states
+        tau_motor(i) = _motors[i]->tau;
+        dq_motor(i) = _motors[i]->dq;
+        q_motor(i) = _motors[i]->q;
+    }
+    // Mapping
+    q = _pos_inv_mapping * q_motor;
+    dq = _vel_inv_mapping * dq_motor;
+    tau = _vel_mapping.transpose() * tau_motor;
+}
 
-// bool LegControl::run(Vector3d tau_d, Vector3d dq_d, Vector3d q_d, Vector3d kp, Vector3d kd)
-// {
-//     // from actual motor states to theoretical motor states
-//     if (cmd_is_safe(q_d)) {
-//         for (int i = 0; i < 3; i++) {
-//             if (!motors[i]->run(axis_transfer(i)*tau_d(i),
-//                                 axis_transfer(i)*dq_d(i),
-//                                 axis_transfer(i)*q_d(i),
-//                                 kp(i),
-//                                 kd(i))) 
-//             {return false;}
-//         }
-//         this->extract();
-//         return true;
-//     }
-//     return false;
-// }
+bool LegControl::stop()
+{
+    int success = 0;
+    for (auto motor_ptr : _motors){
+        if (motor_ptr->stop()) {++success;}
+    }
+    this->_extract();
+    if (success != 3) {return false;}
+    return true;
+}
 
-// bool LegControl::run(Vector3d tau_d)
-// {
-//     for (int i = 0; i < 3; i++) {
-//         if (!motors[i]->run(axis_transfer(i)*tau_d(i))) 
-//         {return false;}
-//     }
-//     this->extract();
-//     return true;
-// }
+bool LegControl::run(const Vector3d &tau_d, const Vector3d &dq_d, const Vector3d &q_d,
+                     Vector3d kp, Vector3d kd)
+{
+    Vector3d tau_motor, dq_motor, q_motor;
+    q_motor = _pos_mapping * q_d;
+    dq_motor = _vel_mapping * dq_d;
+    tau_motor = _vel_inv_mapping.transpose() * tau_d;
+    int success = 0;
+    if (_cmd_is_safe(q_d)) {
+        for (int i = 0; i < 3; i++) {
+            if (_motors[i]->run(tau_motor(i), dq_motor(i), q_motor(i), kp(i), kd(i))) 
+            {++success;}
+        }
+        this->_extract();
+        if (success != 3) {return false;}
+        return true;
+    }
+    return false;
+}
 
-// std::ostream & operator<<(std::ostream &os, const LegControl &leg)
-// {
-//     os << "[Leg id]: " << (int)leg.leg_type << endl  // 0,1,2,3
-//         << "[Motor temperature]: " << leg.temp_list[0] << " " << leg.temp_list[1] << " " << leg.temp_list[2] << endl 
-//         << "[Leg force]: " << leg.foot_force.transpose() << endl
-//         << "[Leg velocity]: " << leg.foot_vel.transpose() << endl
-//         << "[Leg position]: " << leg.foot_pos.transpose() << endl
-//         << "[Motor torque]: " << leg.tau.transpose() << endl
-//         << "[Motor velocity]: " << leg.dq.transpose() << endl
-//         << "[Motor position]: " << leg.q.transpose() << endl;
-//     return os;
-// }
+bool LegControl::run(const Vector3d &tau_d)
+{
+    Vector3d dq_d, q_d;
+    dq_d.setZero();
+    q_d.setZero();
+    return this->run(tau_d, dq_d, q_d, Vector3d::Zero(), Vector3d::Zero());
+}
+
+std::ostream & operator<<(std::ostream &os, const LegControl &leg)
+{
+    os << "[Leg id]: " << (int)leg.leg_type << endl  // 0,1,2,3
+        << "[Motor temperature]: " << leg.temp_vec[0] << " " << leg.temp_vec[1] << " " << leg.temp_vec[2] << endl 
+        << "[Motor torque]: " << leg.tau.transpose() << endl
+        << "[Motor velocity]: " << leg.dq.transpose() << endl
+        << "[Motor position]: " << leg.q.transpose() << endl;
+    return os;
+}

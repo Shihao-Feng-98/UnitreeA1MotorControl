@@ -49,4 +49,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/calibration.dir/DependInfo.cmake"
+  "CMakeFiles/multi_thread2.dir/DependInfo.cmake"
+  "CMakeFiles/multi_thread.dir/DependInfo.cmake"
   )

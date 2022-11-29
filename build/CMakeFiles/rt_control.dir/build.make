@@ -83,31 +83,31 @@ CMakeFiles/rt_control.dir/src/motor_control.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/rt_control.dir/src/motor_control.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/feng_shihao/fsh_file/unitree_motor_control/src/motor_control.cpp -o CMakeFiles/rt_control.dir/src/motor_control.cpp.s
 
-CMakeFiles/rt_control.dir/src/traj_generator.cpp.o: CMakeFiles/rt_control.dir/flags.make
-CMakeFiles/rt_control.dir/src/traj_generator.cpp.o: ../src/traj_generator.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/rt_control.dir/src/traj_generator.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/rt_control.dir/src/traj_generator.cpp.o -c /home/feng_shihao/fsh_file/unitree_motor_control/src/traj_generator.cpp
+CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.o: CMakeFiles/rt_control.dir/flags.make
+CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.o: ../src/periodic_rt_task.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.o -c /home/feng_shihao/fsh_file/unitree_motor_control/src/periodic_rt_task.cpp
 
-CMakeFiles/rt_control.dir/src/traj_generator.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/rt_control.dir/src/traj_generator.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/feng_shihao/fsh_file/unitree_motor_control/src/traj_generator.cpp > CMakeFiles/rt_control.dir/src/traj_generator.cpp.i
+CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/feng_shihao/fsh_file/unitree_motor_control/src/periodic_rt_task.cpp > CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.i
 
-CMakeFiles/rt_control.dir/src/traj_generator.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/rt_control.dir/src/traj_generator.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/feng_shihao/fsh_file/unitree_motor_control/src/traj_generator.cpp -o CMakeFiles/rt_control.dir/src/traj_generator.cpp.s
+CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/feng_shihao/fsh_file/unitree_motor_control/src/periodic_rt_task.cpp -o CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.s
 
 # Object files for target rt_control
 rt_control_OBJECTS = \
 "CMakeFiles/rt_control.dir/src/rt_control.cpp.o" \
 "CMakeFiles/rt_control.dir/src/motor_control.cpp.o" \
-"CMakeFiles/rt_control.dir/src/traj_generator.cpp.o"
+"CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.o"
 
 # External object files for target rt_control
 rt_control_EXTERNAL_OBJECTS =
 
 ../bin/rt_control: CMakeFiles/rt_control.dir/src/rt_control.cpp.o
 ../bin/rt_control: CMakeFiles/rt_control.dir/src/motor_control.cpp.o
-../bin/rt_control: CMakeFiles/rt_control.dir/src/traj_generator.cpp.o
+../bin/rt_control: CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.o
 ../bin/rt_control: CMakeFiles/rt_control.dir/build.make
 ../bin/rt_control: CMakeFiles/rt_control.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable ../bin/rt_control"

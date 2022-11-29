@@ -6,7 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/feng_shihao/fsh_file/unitree_motor_control/src/calibration.cpp" "/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/calibration.dir/src/calibration.cpp.o"
   "/home/feng_shihao/fsh_file/unitree_motor_control/src/motor_control.cpp" "/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/calibration.dir/src/motor_control.cpp.o"
-  "/home/feng_shihao/fsh_file/unitree_motor_control/src/traj_generator.cpp" "/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/calibration.dir/src/traj_generator.cpp.o"
+  "/home/feng_shihao/fsh_file/unitree_motor_control/src/periodic_rt_task.cpp" "/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/calibration.dir/src/periodic_rt_task.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

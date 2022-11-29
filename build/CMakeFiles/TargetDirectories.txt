@@ -1,3 +1,5 @@
 /home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/rebuild_cache.dir
 /home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/edit_cache.dir
 /home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/calibration.dir
+/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/multi_thread2.dir
+/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/multi_thread.dir

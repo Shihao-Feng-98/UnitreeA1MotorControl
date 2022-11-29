@@ -24,7 +24,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include
 # 添加源文件路径
 set(SRC 
     src/motor_control.cpp
-    src/traj_generator.cpp
+    src/periodic_rt_task.cpp
 ) 
 
 # 添加链接库文件路径 -L
@@ -45,12 +45,34 @@ link_directories(lib                 # unitree A1 motor
 # target_compile_options(rt_control PRIVATE ${PIN_CFLAGS_OTHER})
 
 # 输出可执行文件 
+add_executable(multi_thread src/rt_control_multi_thread.cpp ${SRC})
+# 链接库
+target_link_libraries(multi_thread PRIVATE 
+                    ${UNITREE_LIBS}   # unitree motor 
+                    pthread           # C thread 
+                    ${PIN_LIBRARIES}  # pinocchio
+)         
+target_include_directories(multi_thread PRIVATE ${PIN_INCLUDE_DIRS})
+target_compile_options(multi_thread PRIVATE ${PIN_CFLAGS_OTHER})
+
+# 输出可执行文件 
+add_executable(multi_thread2 src/rt_control_multi_thread2.cpp ${SRC})
+# 链接库
+target_link_libraries(multi_thread2 PRIVATE 
+                    ${UNITREE_LIBS}   # unitree motor 
+                    pthread           # C thread 
+                    ${PIN_LIBRARIES}  # pinocchio
+)         
+target_include_directories(multi_thread2 PRIVATE ${PIN_INCLUDE_DIRS})
+target_compile_options(multi_thread2 PRIVATE ${PIN_CFLAGS_OTHER})
+
+# 输出可执行文件 
 add_executable(calibration src/calibration.cpp ${SRC})
 # 链接库
 target_link_libraries(calibration PRIVATE 
                     ${UNITREE_LIBS}   # unitree motor 
-                    pthread           # C thread 
                     ${PIN_LIBRARIES}  # pinocchio
+                    pthread           # C thread 
 )         
 target_include_directories(calibration PRIVATE ${PIN_INCLUDE_DIRS})
 target_compile_options(calibration PRIVATE ${PIN_CFLAGS_OTHER})

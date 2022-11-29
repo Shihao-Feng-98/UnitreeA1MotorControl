@@ -9,14 +9,24 @@ For motor calibration and test
 #include <unistd.h> // sleep
 using namespace std;
 
-#include "utils/C_timer.h"
-#include "utils/periodic_rt_task.h"
+#include "C_timer.h"
+#include "periodic_rt_task.h"
 #include "motor_control.h"
-#include "traj_generator.h"
 
 // gobal variable
 unique_ptr<MotorControl> motor;
 const double dt = 0.002;
+
+Vector2d p2p_traj(const double &init, const double &target, const double &T, double s)
+{
+    Vector2d res;
+    double s_new, ds_new;
+    s_new = 3*pow(s,2) - 2*pow(s,3);
+    ds_new = 6/T * s * (1-s);
+    res(0) = init + s_new* (target - init);
+    res(1) = ds_new * (target - init);
+    return res;
+}
 
 void* main_loop(void* argc)
 {
@@ -24,23 +34,21 @@ void* main_loop(void* argc)
     double t_since_run = 0;
     double T = 1.;
     double s = 0.;
-    double q_target = 0.;
-    Vector3d q_start, q_end;
-    vector<Vector3d> res;
-    Point2PointTrajGenerator traj_gen;
+    double init, target;
+    Vector2d res;
     
     cout << "[Main Thread]: thread start\n";
     
     // motor zero init
-    q_start.setConstant(motor->q);
-    q_end.setZero();
+    init = motor->q;
+    target = 0.;
     while (t_since_run < T)
     {
         timer_step.reset();
 
         s = t_since_run/T;
-        res = traj_gen.linear_traj(q_start, q_end, T, s);
-        motor->run(0., res[1](0), res[0](0));
+        res = p2p_traj(init, target, T, s);
+        motor->run(0., res(1), res(0));
 
         t_since_run += dt;
         while (timer_step.end() < dt*1000*1000);
@@ -52,26 +60,25 @@ void* main_loop(void* argc)
     {
         cout << *motor << endl;
         cout << "enter target pos [-pi,pi] or 1000 to exit: ";
-        cin >> q_target;
+        cin >> target;
 
-        if (q_target <= M_PI && q_target >= -M_PI)
+        if (target <= M_PI && target >= -M_PI)
         {
-            q_start.setConstant(motor->q);
-            q_end.setConstant(q_target);
+            init = motor->q;
             while (t_since_run < T)
             {
                 timer_step.reset();
 
                 s = t_since_run/T;
-                res = traj_gen.linear_traj(q_start, q_end, T, s);
-                motor->run(0., res[1](0), res[0](0));
+                res = p2p_traj(init, target, T, s);
+                motor->run(0., res(1), res(0));
 
                 t_since_run += dt;
                 while (timer_step.end() < dt*1000*1000);
             }
             t_since_run = 0.; // reset
         }
-        else if(q_target == 1000){break;}
+        else if(target == 1000){break;}
     }
     
     // motor stop
@@ -93,11 +100,11 @@ int main(int argc, char **argv)
     }
 
     int motor_id = atoi(argv[1]);
-    SerialPort serial_port("/dev/ttyUSB0");
+    SerialPort serial_port("/dev/unitree_usb0");
     motor = make_unique<MotorControl>(&serial_port, motor_id, 0.);
 
     // 主控制线程
-    PeriodicRtTask *main_task = new PeriodicRtTask("[Main Control Thread]", 95, main_loop);
+    PeriodicRtTask *main_task = new PeriodicRtTask("[Main Control Thread]", 95, main_loop, 5);
     sleep(1); 
     // 析构函数会join线程，等待子线程结束
     delete main_task;
