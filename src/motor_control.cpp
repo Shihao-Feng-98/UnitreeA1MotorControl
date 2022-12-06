@@ -13,7 +13,7 @@ MotorControl::MotorControl(SerialPort* serial_ptr, unsigned short id, double off
     this->_serial_ptr = serial_ptr;
     this->_offset = offset;
     this->_motor_s.id = id;
-    this->_motor_s.motorType = MotorType::A1Go1;
+    this->_motor_s.motorType = MotorType::A1;
     this->_motor_r.motorType = this->_motor_s.motorType;
     // init motor states
     this->stop();

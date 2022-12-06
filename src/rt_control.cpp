@@ -98,7 +98,7 @@ int main(int argc, char **argv)
     q3_init = motor3->q;
 
     // 主控制线程
-    PeriodicRtTask *main_task = new PeriodicRtTask("[Main Control Thread]", 95, main_loop, 5);
+    PeriodicRtTask *main_task = new PeriodicRtTask("[Main Control Thread]", 95, main_loop, 3);
     sleep(1); 
     // 析构函数会join线程，等待子线程结束
     delete main_task;
