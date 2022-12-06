@@ -120,14 +120,6 @@ periodic_rt_task.h
 motor_control.h
 /home/feng_shihao/fsh_file/unitree_motor_control/src/motor_control.h
 
-/home/feng_shihao/fsh_file/unitree_motor_control/src/motor_control.cpp
-motor_control.h
--
-
-/home/feng_shihao/fsh_file/unitree_motor_control/src/periodic_rt_task.cpp
-periodic_rt_task.h
--
-
 /usr/include/eigen3/Eigen/Cholesky
 Core
 /usr/include/eigen3/Eigen/Core

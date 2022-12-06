@@ -53,9 +53,9 @@ CMAKE_BINARY_DIR = /home/feng_shihao/fsh_file/unitree_motor_control/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/calibration.dir/all
 all: CMakeFiles/multi_thread2.dir/all
 all: CMakeFiles/multi_thread.dir/all
+all: CMakeFiles/rt_control.dir/all
 
 .PHONY : all
 
@@ -65,38 +65,11 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/calibration.dir/clean
 clean: CMakeFiles/multi_thread2.dir/clean
 clean: CMakeFiles/multi_thread.dir/clean
+clean: CMakeFiles/rt_control.dir/clean
 
 .PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/calibration.dir
-
-# All Build rule for target.
-CMakeFiles/calibration.dir/all:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/depend
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles --progress-num=1,2,3,4 "Built target calibration"
-.PHONY : CMakeFiles/calibration.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/calibration.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/calibration.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles 0
-.PHONY : CMakeFiles/calibration.dir/rule
-
-# Convenience name for target.
-calibration: CMakeFiles/calibration.dir/rule
-
-.PHONY : calibration
-
-# clean rule for target.
-CMakeFiles/calibration.dir/clean:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/clean
-.PHONY : CMakeFiles/calibration.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/multi_thread2.dir
@@ -105,7 +78,7 @@ CMakeFiles/calibration.dir/clean:
 CMakeFiles/multi_thread2.dir/all:
 	$(MAKE) -f CMakeFiles/multi_thread2.dir/build.make CMakeFiles/multi_thread2.dir/depend
 	$(MAKE) -f CMakeFiles/multi_thread2.dir/build.make CMakeFiles/multi_thread2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles --progress-num=9,10,11,12 "Built target multi_thread2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles --progress-num=5,6,7,8 "Built target multi_thread2"
 .PHONY : CMakeFiles/multi_thread2.dir/all
 
 # Build rule for subdir invocation for target.
@@ -132,7 +105,7 @@ CMakeFiles/multi_thread2.dir/clean:
 CMakeFiles/multi_thread.dir/all:
 	$(MAKE) -f CMakeFiles/multi_thread.dir/build.make CMakeFiles/multi_thread.dir/depend
 	$(MAKE) -f CMakeFiles/multi_thread.dir/build.make CMakeFiles/multi_thread.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles --progress-num=5,6,7,8 "Built target multi_thread"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles --progress-num=1,2,3,4 "Built target multi_thread"
 .PHONY : CMakeFiles/multi_thread.dir/all
 
 # Build rule for subdir invocation for target.
@@ -151,6 +124,33 @@ multi_thread: CMakeFiles/multi_thread.dir/rule
 CMakeFiles/multi_thread.dir/clean:
 	$(MAKE) -f CMakeFiles/multi_thread.dir/build.make CMakeFiles/multi_thread.dir/clean
 .PHONY : CMakeFiles/multi_thread.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/rt_control.dir
+
+# All Build rule for target.
+CMakeFiles/rt_control.dir/all:
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/depend
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles --progress-num=9,10,11,12 "Built target rt_control"
+.PHONY : CMakeFiles/rt_control.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/rt_control.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rt_control.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles 0
+.PHONY : CMakeFiles/rt_control.dir/rule
+
+# Convenience name for target.
+rt_control: CMakeFiles/rt_control.dir/rule
+
+.PHONY : rt_control
+
+# clean rule for target.
+CMakeFiles/rt_control.dir/clean:
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/clean
+.PHONY : CMakeFiles/rt_control.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

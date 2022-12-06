@@ -9,13 +9,6 @@ set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -O3 -std=c++14 -Wall")
 # unitree 
 set(UNITREE_LIBS libunitreeMotorSDK_Linux64.so)
 
-# using pkg-config find pinocchio
-set(ENV{PKG_CONFIG_PATH} /opt/openrobots/lib/pkgconfig)
-find_package(PkgConfig REQUIRED) 
-pkg_check_modules(PIN REQUIRED pinocchio) 
-message(STATUS "=== PIN_LIBRARIES: ${PIN_LIBRARIES}") # lib info
-message(STATUS "=== PIN_INCLUDE_DIRS: ${PIN_INCLUDE_DIRS}") # pinocchio include path
-
 # 添加头文件路径 -I
 include_directories(${CMAKE_SOURCE_DIR}/include    
                     /usr/include/eigen3            # Eigen
@@ -29,20 +22,16 @@ set(SRC
 
 # 添加链接库文件路径 -L
 link_directories(lib                 # unitree A1 motor 
-                /opt/openrobots/lib  # pinocchio
-
 )
 
-# # 输出可执行文件 
-# add_executable(rt_control src/rt_control.cpp ${SRC})
-# # 链接库
-# target_link_libraries(rt_control PRIVATE 
-#                     ${UNITREE_LIBS}   # unitree motor 
-#                     pthread           # C thread 
-#                     ${PIN_LIBRARIES}  # pinocchio
-# )         
-# target_include_directories(rt_control PRIVATE ${PIN_INCLUDE_DIRS})
-# target_compile_options(rt_control PRIVATE ${PIN_CFLAGS_OTHER})
+# 输出可执行文件 
+add_executable(rt_control src/rt_control.cpp ${SRC})
+# 链接库
+target_link_libraries(rt_control PRIVATE 
+                    ${UNITREE_LIBS}   # unitree motor 
+                    pthread           # C thread 
+)         
+
 
 # 输出可执行文件 
 add_executable(multi_thread src/rt_control_multi_thread.cpp ${SRC})
@@ -50,10 +39,7 @@ add_executable(multi_thread src/rt_control_multi_thread.cpp ${SRC})
 target_link_libraries(multi_thread PRIVATE 
                     ${UNITREE_LIBS}   # unitree motor 
                     pthread           # C thread 
-                    ${PIN_LIBRARIES}  # pinocchio
 )         
-target_include_directories(multi_thread PRIVATE ${PIN_INCLUDE_DIRS})
-target_compile_options(multi_thread PRIVATE ${PIN_CFLAGS_OTHER})
 
 # 输出可执行文件 
 add_executable(multi_thread2 src/rt_control_multi_thread2.cpp ${SRC})
@@ -61,21 +47,15 @@ add_executable(multi_thread2 src/rt_control_multi_thread2.cpp ${SRC})
 target_link_libraries(multi_thread2 PRIVATE 
                     ${UNITREE_LIBS}   # unitree motor 
                     pthread           # C thread 
-                    ${PIN_LIBRARIES}  # pinocchio
 )         
-target_include_directories(multi_thread2 PRIVATE ${PIN_INCLUDE_DIRS})
-target_compile_options(multi_thread2 PRIVATE ${PIN_CFLAGS_OTHER})
 
-# 输出可执行文件 
-add_executable(calibration src/calibration.cpp ${SRC})
-# 链接库
-target_link_libraries(calibration PRIVATE 
-                    ${UNITREE_LIBS}   # unitree motor 
-                    ${PIN_LIBRARIES}  # pinocchio
-                    pthread           # C thread 
-)         
-target_include_directories(calibration PRIVATE ${PIN_INCLUDE_DIRS})
-target_compile_options(calibration PRIVATE ${PIN_CFLAGS_OTHER})
+# # 输出可执行文件 
+# add_executable(calibration src/calibration.cpp ${SRC})
+# # 链接库
+# target_link_libraries(calibration PRIVATE 
+#                     ${UNITREE_LIBS}   # unitree motor 
+#                     pthread           # C thread 
+# )         
 
 # # 输出可执行文件 
 # add_executable(changeID src/changeID.cpp)

@@ -100,7 +100,8 @@ int main(int argc, char **argv)
     }
 
     int motor_id = atoi(argv[1]);
-    SerialPort serial_port("/dev/unitree_usb0");
+    // SerialPort serial_port("/dev/unitree_usb0");
+    SerialPort serial_port("/dev/ttyUSB0");
     motor = make_unique<MotorControl>(&serial_port, motor_id, 0.);
 
     // 主控制线程

@@ -16,22 +16,22 @@ using namespace std;
 // gobal variable
 unique_ptr<MotorControl> motor0, motor1, motor2, motor3;
 const double dt = 0.005; // 5ms
-size_t iteration = 0;
 double q0_init, q1_init, q2_init, q3_init;
 
 
 Vector2d sin_func(const double &init, const double &T, double s)
 {
     Vector2d res;
-    res(0) = init + M_PI/3 * sin(2*M_PI*s);
-    res(1) = M_PI/3 * 2*M_PI / T * cos(2*M_PI*s);
+    res(0) = init + M_PI/2 * sin(2*M_PI*s);
+    res(1) = M_PI/2 * 2*M_PI / T * cos(2*M_PI*s);
     return res;
 }
 
 void* main_loop(void* argc)
 {
-    CTimer timer_step;
+    CTimer timer_step, timer_total;
     double t_since_run = 0;
+    size_t iteration = 0;
     double T = 5.;
     double s = 0.;
 
@@ -39,6 +39,7 @@ void* main_loop(void* argc)
 
     cout << "[Main Thread]: thread start\n";
 
+    timer_total.reset();
     while (t_since_run < T)
     {
         timer_step.reset();
@@ -58,6 +59,7 @@ void* main_loop(void* argc)
         t_since_run += dt;
         while (timer_step.end() < dt*1000*1000);
     }
+    cout << "time: " << timer_total.end()/1000 << " ms\n";
     // motor stop
     motor0->stop();
     motor1->stop();

@@ -111,19 +111,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named calibration
-
-# Build rule for target.
-calibration: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 calibration
-.PHONY : calibration
-
-# fast build rule for target.
-calibration/fast:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/build
-.PHONY : calibration/fast
-
-#=============================================================================
 # Target rules for targets named multi_thread2
 
 # Build rule for target.
@@ -149,32 +136,18 @@ multi_thread/fast:
 	$(MAKE) -f CMakeFiles/multi_thread.dir/build.make CMakeFiles/multi_thread.dir/build
 .PHONY : multi_thread/fast
 
-src/calibration.o: src/calibration.cpp.o
+#=============================================================================
+# Target rules for targets named rt_control
 
-.PHONY : src/calibration.o
+# Build rule for target.
+rt_control: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rt_control
+.PHONY : rt_control
 
-# target to build an object file
-src/calibration.cpp.o:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/calibration.cpp.o
-.PHONY : src/calibration.cpp.o
-
-src/calibration.i: src/calibration.cpp.i
-
-.PHONY : src/calibration.i
-
-# target to preprocess a source file
-src/calibration.cpp.i:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/calibration.cpp.i
-.PHONY : src/calibration.cpp.i
-
-src/calibration.s: src/calibration.cpp.s
-
-.PHONY : src/calibration.s
-
-# target to generate assembly for a file
-src/calibration.cpp.s:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/calibration.cpp.s
-.PHONY : src/calibration.cpp.s
+# fast build rule for target.
+rt_control/fast:
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/build
+.PHONY : rt_control/fast
 
 src/motor_control.o: src/motor_control.cpp.o
 
@@ -182,9 +155,9 @@ src/motor_control.o: src/motor_control.cpp.o
 
 # target to build an object file
 src/motor_control.cpp.o:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/motor_control.cpp.o
 	$(MAKE) -f CMakeFiles/multi_thread2.dir/build.make CMakeFiles/multi_thread2.dir/src/motor_control.cpp.o
 	$(MAKE) -f CMakeFiles/multi_thread.dir/build.make CMakeFiles/multi_thread.dir/src/motor_control.cpp.o
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/src/motor_control.cpp.o
 .PHONY : src/motor_control.cpp.o
 
 src/motor_control.i: src/motor_control.cpp.i
@@ -193,9 +166,9 @@ src/motor_control.i: src/motor_control.cpp.i
 
 # target to preprocess a source file
 src/motor_control.cpp.i:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/motor_control.cpp.i
 	$(MAKE) -f CMakeFiles/multi_thread2.dir/build.make CMakeFiles/multi_thread2.dir/src/motor_control.cpp.i
 	$(MAKE) -f CMakeFiles/multi_thread.dir/build.make CMakeFiles/multi_thread.dir/src/motor_control.cpp.i
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/src/motor_control.cpp.i
 .PHONY : src/motor_control.cpp.i
 
 src/motor_control.s: src/motor_control.cpp.s
@@ -204,9 +177,9 @@ src/motor_control.s: src/motor_control.cpp.s
 
 # target to generate assembly for a file
 src/motor_control.cpp.s:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/motor_control.cpp.s
 	$(MAKE) -f CMakeFiles/multi_thread2.dir/build.make CMakeFiles/multi_thread2.dir/src/motor_control.cpp.s
 	$(MAKE) -f CMakeFiles/multi_thread.dir/build.make CMakeFiles/multi_thread.dir/src/motor_control.cpp.s
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/src/motor_control.cpp.s
 .PHONY : src/motor_control.cpp.s
 
 src/periodic_rt_task.o: src/periodic_rt_task.cpp.o
@@ -215,9 +188,9 @@ src/periodic_rt_task.o: src/periodic_rt_task.cpp.o
 
 # target to build an object file
 src/periodic_rt_task.cpp.o:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/periodic_rt_task.cpp.o
 	$(MAKE) -f CMakeFiles/multi_thread2.dir/build.make CMakeFiles/multi_thread2.dir/src/periodic_rt_task.cpp.o
 	$(MAKE) -f CMakeFiles/multi_thread.dir/build.make CMakeFiles/multi_thread.dir/src/periodic_rt_task.cpp.o
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.o
 .PHONY : src/periodic_rt_task.cpp.o
 
 src/periodic_rt_task.i: src/periodic_rt_task.cpp.i
@@ -226,9 +199,9 @@ src/periodic_rt_task.i: src/periodic_rt_task.cpp.i
 
 # target to preprocess a source file
 src/periodic_rt_task.cpp.i:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/periodic_rt_task.cpp.i
 	$(MAKE) -f CMakeFiles/multi_thread2.dir/build.make CMakeFiles/multi_thread2.dir/src/periodic_rt_task.cpp.i
 	$(MAKE) -f CMakeFiles/multi_thread.dir/build.make CMakeFiles/multi_thread.dir/src/periodic_rt_task.cpp.i
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.i
 .PHONY : src/periodic_rt_task.cpp.i
 
 src/periodic_rt_task.s: src/periodic_rt_task.cpp.s
@@ -237,10 +210,37 @@ src/periodic_rt_task.s: src/periodic_rt_task.cpp.s
 
 # target to generate assembly for a file
 src/periodic_rt_task.cpp.s:
-	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/periodic_rt_task.cpp.s
 	$(MAKE) -f CMakeFiles/multi_thread2.dir/build.make CMakeFiles/multi_thread2.dir/src/periodic_rt_task.cpp.s
 	$(MAKE) -f CMakeFiles/multi_thread.dir/build.make CMakeFiles/multi_thread.dir/src/periodic_rt_task.cpp.s
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.s
 .PHONY : src/periodic_rt_task.cpp.s
+
+src/rt_control.o: src/rt_control.cpp.o
+
+.PHONY : src/rt_control.o
+
+# target to build an object file
+src/rt_control.cpp.o:
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/src/rt_control.cpp.o
+.PHONY : src/rt_control.cpp.o
+
+src/rt_control.i: src/rt_control.cpp.i
+
+.PHONY : src/rt_control.i
+
+# target to preprocess a source file
+src/rt_control.cpp.i:
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/src/rt_control.cpp.i
+.PHONY : src/rt_control.cpp.i
+
+src/rt_control.s: src/rt_control.cpp.s
+
+.PHONY : src/rt_control.s
+
+# target to generate assembly for a file
+src/rt_control.cpp.s:
+	$(MAKE) -f CMakeFiles/rt_control.dir/build.make CMakeFiles/rt_control.dir/src/rt_control.cpp.s
+.PHONY : src/rt_control.cpp.s
 
 src/rt_control_multi_thread.o: src/rt_control_multi_thread.cpp.o
 
@@ -304,18 +304,18 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... calibration"
 	@echo "... multi_thread2"
 	@echo "... multi_thread"
-	@echo "... src/calibration.o"
-	@echo "... src/calibration.i"
-	@echo "... src/calibration.s"
+	@echo "... rt_control"
 	@echo "... src/motor_control.o"
 	@echo "... src/motor_control.i"
 	@echo "... src/motor_control.s"
 	@echo "... src/periodic_rt_task.o"
 	@echo "... src/periodic_rt_task.i"
 	@echo "... src/periodic_rt_task.s"
+	@echo "... src/rt_control.o"
+	@echo "... src/rt_control.i"
+	@echo "... src/rt_control.s"
 	@echo "... src/rt_control_multi_thread.o"
 	@echo "... src/rt_control_multi_thread.i"
 	@echo "... src/rt_control_multi_thread.s"

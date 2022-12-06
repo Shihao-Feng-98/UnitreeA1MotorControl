@@ -102,6 +102,10 @@ stdint.h
 iostream
 -
 
+/home/feng_shihao/fsh_file/unitree_motor_control/src/motor_control.cpp
+motor_control.h
+-
+
 /home/feng_shihao/fsh_file/unitree_motor_control/src/rt_control_multi_thread2.cpp
 pthread.h
 -
