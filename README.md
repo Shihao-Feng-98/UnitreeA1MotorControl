@@ -1,4 +1,6 @@
 # Unitree_motor_control
+Important notes: please run in ubuntu 18.04, ubuntu 20.04 and ubuntu 22.04 are abnormal in USB to RS485 communication， while causes standstill in motor control.
+
 Some examples for Unitree motor real-time control. 
 
 ## Distinguish multiple identical device ports (ttyUSB*)
