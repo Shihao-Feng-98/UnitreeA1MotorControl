@@ -1,4 +1,4 @@
-# Install script for directory: /home/feng_shihao/fsh_file/unitree_motor_control
+# Install script for directory: /home/shihao_feng/fsh_file/unitree_motor_control
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/feng_shihao/fsh_file/unitree_motor_control/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/shihao_feng/fsh_file/unitree_motor_control/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

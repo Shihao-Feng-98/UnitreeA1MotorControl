@@ -27,9 +27,9 @@
 #define OFFSET_RL1 0.
 #define OFFSET_RL2 0.
 // Linkage limit
-#define ETA_MIN 8./180.*M_PI  // actual 10deg
+#define ETA_MIN 8./180.*M_PI  
 #define ETA_MAX 90./180.*M_PI
-#define X_ALONG_ANGLE_MIN 0./180.*M_PI
+#define X_ALONG_ANGLE_MIN -15./180.*M_PI
 #define X_ALONG_ANGLE_MAX 105./180.*M_PI
 #define Y_ALONG_ANGLE_LIMIT 80./180.*M_PI
 

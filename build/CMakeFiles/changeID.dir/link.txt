@@ -1,0 +1,1 @@
+/usr/bin/c++   -O3 -std=c++14 -Wall -O3 -DNDEBUG   CMakeFiles/changeID.dir/src/tools/changeID.cpp.o  -o ../bin/changeID  -L/home/shihao_feng/fsh_file/unitree_motor_control/lib -Wl,-rpath,/home/shihao_feng/fsh_file/unitree_motor_control/lib -lunitreeMotorSDK_Linux64 

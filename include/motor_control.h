@@ -74,7 +74,7 @@ private:
     bool _cmd_is_safe(Vector3d q_d); // tau_d, dq_d在MotorControl中检查
     void _extract();
 
-    SerialPort* _serial_ptr; // TODO: const string -> creat SerialPort
+    SerialPort* _serial_ptr; 
     vector<double> _offset_vec;
     LegType leg_type;  
     vector<MotorControl*> _motors;

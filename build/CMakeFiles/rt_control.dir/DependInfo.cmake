@@ -4,9 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/feng_shihao/fsh_file/unitree_motor_control/src/motor_control.cpp" "/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/rt_control.dir/src/motor_control.cpp.o"
-  "/home/feng_shihao/fsh_file/unitree_motor_control/src/periodic_rt_task.cpp" "/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.o"
-  "/home/feng_shihao/fsh_file/unitree_motor_control/src/rt_control.cpp" "/home/feng_shihao/fsh_file/unitree_motor_control/build/CMakeFiles/rt_control.dir/src/rt_control.cpp.o"
+  "/home/shihao_feng/fsh_file/unitree_motor_control/src/motor_control.cpp" "/home/shihao_feng/fsh_file/unitree_motor_control/build/CMakeFiles/rt_control.dir/src/motor_control.cpp.o"
+  "/home/shihao_feng/fsh_file/unitree_motor_control/src/motor_test/rt_control.cpp" "/home/shihao_feng/fsh_file/unitree_motor_control/build/CMakeFiles/rt_control.dir/src/motor_test/rt_control.cpp.o"
+  "/home/shihao_feng/fsh_file/unitree_motor_control/src/periodic_rt_task.cpp" "/home/shihao_feng/fsh_file/unitree_motor_control/build/CMakeFiles/rt_control.dir/src/periodic_rt_task.cpp.o"
+  "/home/shihao_feng/fsh_file/unitree_motor_control/src/traj_generator.cpp" "/home/shihao_feng/fsh_file/unitree_motor_control/build/CMakeFiles/rt_control.dir/src/traj_generator.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

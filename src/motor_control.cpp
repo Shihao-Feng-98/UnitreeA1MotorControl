@@ -29,10 +29,10 @@ bool MotorControl::_cmd_is_safe(double tau_d, double dq_d, double q_d, double kp
         cout << "[Motor " << _motor_s.id << "]: dq_d safety error\n";
         return false;
     } 
-    if (fabs(q_d) >= M_PI){ 
-        cout << "[Motor " << _motor_s.id << "]: q_d safety error\n";
-        return false;
-    } 
+    // if (fabs(q_d) >= M_PI){ 
+    //     cout << "[Motor " << _motor_s.id << "]: q_d safety error\n";
+    //     return false;
+    // } 
     if (kp > 5 || kp < 0){
         cout << "[Motor " << _motor_s.id << "]: kp safety error\n";
         return false;
@@ -177,29 +177,29 @@ LegControl::~LegControl()
 
 bool LegControl::_cmd_is_safe(Vector3d q_d)
 {
-    // phi0
-    if ((leg_type == LegType::FL) || (leg_type == LegType::RL)) {
-        if ((q_d(0) < X_ALONG_ANGLE_MIN) || (q_d(0) > X_ALONG_ANGLE_MAX)) {
-            cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
-            return false;
-        }
-    }
-    else {
-        if ((q_d(0) < -X_ALONG_ANGLE_MAX) || (q_d(0) > X_ALONG_ANGLE_MIN)) {
-            cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
-            return false;
-        }
-    }
-    // phi1 and phi2
-    if ((fabs(q_d(1)) > Y_ALONG_ANGLE_LIMIT) || (fabs(q_d(2)) > Y_ALONG_ANGLE_LIMIT)) {
-        cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
-        return false;
-    }
-    // eta = phi1 - phi2
-    if (((q_d(2)-q_d(1)) > ETA_MAX) || ((q_d(2)-q_d(1)) < ETA_MIN)) {
-        cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n";  
-        return false;
-    }
+    // // phi0
+    // if ((leg_type == LegType::FL) || (leg_type == LegType::RL)) {
+    //     if ((q_d(0) < X_ALONG_ANGLE_MIN) || (q_d(0) > X_ALONG_ANGLE_MAX)) {
+    //         cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
+    //         return false;
+    //     }
+    // }
+    // else {
+    //     if ((q_d(0) < -X_ALONG_ANGLE_MAX) || (q_d(0) > -X_ALONG_ANGLE_MIN)) {
+    //         cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
+    //         return false;
+    //     }
+    // }
+    // // phi1 and phi2
+    // if ((fabs(q_d(1)) > Y_ALONG_ANGLE_LIMIT) || (fabs(q_d(2)) > Y_ALONG_ANGLE_LIMIT)) {
+    //     cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
+    //     return false;
+    // }
+    // // eta = phi1 - phi2
+    // if (((q_d(2)-q_d(1)) > ETA_MAX) || ((q_d(2)-q_d(1)) < ETA_MIN)) {
+    //     cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n";  
+    //     return false;
+    // }
 
     return true;
 }
