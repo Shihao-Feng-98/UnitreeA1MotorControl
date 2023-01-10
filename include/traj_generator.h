@@ -2,7 +2,7 @@
 Description: Trajectory generator
      Author: Shihao Feng
       Email: 13247344844@163.com
-Update time: 2022-11-14
+Update time: 2023-01-06
 */
 
 #ifndef TRAJ_GENERATOR_H

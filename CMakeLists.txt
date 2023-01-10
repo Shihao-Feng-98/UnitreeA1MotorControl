@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(unitree_motor_control)
 
-set(CMAKE_BUILD_TYPE Release) # Debug/Release
+set(CMAKE_BUILD_TYPE Debug) # Debug/Release
 
 # g++编译选项 -O3优化代码
 set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -O3 -std=c++14 -Wall")
@@ -60,7 +60,6 @@ target_compile_options(multi_leg PRIVATE ${PIN_CFLAGS_OTHER})
 # target_link_libraries(rt_control PRIVATE 
 #                     ${UNITREE_LIBS}   # unitree motor 
 #                     pthread           # C thread 
-
 # )     
 
 # # 输出可执行文件 
@@ -85,7 +84,10 @@ target_compile_options(multi_leg PRIVATE ${PIN_CFLAGS_OTHER})
 # target_link_libraries(calibration PRIVATE 
 #                     ${UNITREE_LIBS}   # unitree motor 
 #                     pthread           # C thread 
+#                     ${PIN_LIBRARIES}  # pinocchio
 # )         
+# target_include_directories(calibration PRIVATE ${PIN_INCLUDE_DIRS})
+# target_compile_options(calibration PRIVATE ${PIN_CFLAGS_OTHER})
 
 # # 输出可执行文件 
 # add_executable(changeID src/tools/changeID.cpp)

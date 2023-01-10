@@ -16,7 +16,7 @@ using namespace std;
 
 // gobal variable
 unique_ptr<LegControl> leg_control;
-const double dt = 0.004; // 5ms
+const double dt = 0.004; 
 
 void* main_loop(void* argc)
 {
@@ -30,41 +30,26 @@ void* main_loop(void* argc)
     TrajGenerator traj_generator;
     Vector3d q_init, q_target;
     q_init = leg_control->q;
+    // cout << "q_init:" << q_init.transpose() << endl;
     vector<Vector3d> res(3);
 
     cout << "[Main Thread]: thread start\n";
-    // init
+    // init 
     while (t_since_run < T_init)
     {
         timer_step.reset();
 
         s = t_since_run/T_init;
-        res = traj_generator.p2p_traj(q_init, Vector3d::Zero(), T_init, s);
+        q_target << 45./180.*M_PI, 0., 10./180.*M_PI;
+        res = traj_generator.p2p_traj(q_init, q_target, T_init, s);
 
+        // cout << res[0].transpose() << endl;
         leg_control->run(Vector3d::Zero(), res[1], res[0]);
 
         t_since_run += dt;
         while (timer_step.end() < dt*1000*1000);
     }
     t_since_run = 0.;
-
-    // timer_total.reset();
-    // while (t_since_run < T_traj)
-    // {
-    //     timer_step.reset();
-
-    //     s = t_since_run/T_traj;
-    //     q_target << 0., 0., 0.;
-    //     res = traj_generator.p2p_traj(Vector3d::Zero(), q_target, T_traj, s);
-
-    //     leg_control->run(Vector3d::Zero(), res[1], res[0]);
-        
-    //     ++iteration;
-    //     t_since_run += dt;
-    //     while (timer_step.end() < dt*1000*1000);
-    // }
-    // cout << "time: " << timer_total.end()/1000 << " ms\n";
-    // cout << "iteration: " << iteration << endl;
     
     // motor stop
     leg_control->stop();
@@ -84,9 +69,25 @@ int main(int argc, char **argv)
         return -2;
     }
 
-    SerialPort serial_port("/dev/unitree_usb0");
-    vector<double> offset_vec{0.,0.,0.};
-    leg_control = make_unique<LegControl>(&serial_port, offset_vec, LegType::FR);
+    // 测试正常
+    // SerialPort serial_port("/dev/unitree_usb1");
+    // vector<double> offset_vec{OFFSET_FR0, OFFSET_FR1, OFFSET_FR2};
+    // leg_control = make_unique<LegControl>(&serial_port, offset_vec, LegType::FR);
+
+    // 测试正常
+    SerialPort serial_port("/dev/unitree_usb3");
+    vector<double> offset_vec{OFFSET_FL0, OFFSET_FL1, OFFSET_FL2};
+    leg_control = make_unique<LegControl>(&serial_port, offset_vec, LegType::FL);
+
+    // 测试正常
+    // SerialPort serial_port("/dev/unitree_usb2");
+    // vector<double> offset_vec{OFFSET_RR0, OFFSET_RR1, OFFSET_RR2};
+    // leg_control = make_unique<LegControl>(&serial_port, offset_vec, LegType::RR);
+
+    // // 测试正常
+    // SerialPort serial_port("/dev/unitree_usb0");
+    // vector<double> offset_vec{OFFSET_RL0, OFFSET_RL1, OFFSET_RL2};
+    // leg_control = make_unique<LegControl>(&serial_port, offset_vec, LegType::RL);
 
     // 主控制线程
     PeriodicRtTask *main_task = new PeriodicRtTask("[Main Control Thread]", 95, main_loop);

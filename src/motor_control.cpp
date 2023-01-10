@@ -96,7 +96,7 @@ bool MotorControl::run(double tau_d)
 
 std::ostream & operator<<(std::ostream &os, const MotorControl &motor)
 {
-    os << "[Motor id]: " << motor._motor_r.motor_id << endl  // 0,1,2
+    os << "[Motor id]: " << (int)motor._motor_r.motor_id << endl  // 0,1,2
         << "[Motor temperature]: " << motor.temp << " ℃" << endl
         << "[Motor torque]: " << motor.tau << " Nm" << endl
         << "[Motor velocity]: " << motor.dq << " rad/s" << endl
@@ -126,7 +126,7 @@ LegControl::LegControl(SerialPort* serial_ptr, vector<double> offset_vec, LegTyp
                             0., -1., 1.;
             _pos_inv_mapping << 1., 0., 0.,
                                 0., -1., -1., 
-                                -1., 0., 0.;
+                                0., -1., 0.;
             break;
         case LegType::FL:
             _pos_mapping << 1., 0., 0.,
@@ -177,29 +177,29 @@ LegControl::~LegControl()
 
 bool LegControl::_cmd_is_safe(Vector3d q_d)
 {
-    // // phi0
-    // if ((leg_type == LegType::FL) || (leg_type == LegType::RL)) {
-    //     if ((q_d(0) < X_ALONG_ANGLE_MIN) || (q_d(0) > X_ALONG_ANGLE_MAX)) {
-    //         cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
-    //         return false;
-    //     }
-    // }
-    // else {
-    //     if ((q_d(0) < -X_ALONG_ANGLE_MAX) || (q_d(0) > -X_ALONG_ANGLE_MIN)) {
-    //         cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
-    //         return false;
-    //     }
-    // }
-    // // phi1 and phi2
-    // if ((fabs(q_d(1)) > Y_ALONG_ANGLE_LIMIT) || (fabs(q_d(2)) > Y_ALONG_ANGLE_LIMIT)) {
-    //     cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n"; 
-    //     return false;
-    // }
-    // // eta = phi1 - phi2
-    // if (((q_d(2)-q_d(1)) > ETA_MAX) || ((q_d(2)-q_d(1)) < ETA_MIN)) {
-    //     cout << "[Leg" << (int)leg_type << "]: joint pos safety error\n";  
-    //     return false;
-    // }
+    // phi0
+    if ((leg_type == LegType::FL) || (leg_type == LegType::RL)) {
+        if ((q_d(0) < X_ALONG_ANGLE_MIN) || (q_d(0) > X_ALONG_ANGLE_MAX)) {
+            cout << "[Leg" << (int)leg_type << "]: joint 0 pos safety error(0)\n"; 
+            return false;
+        }
+    }
+    else {
+        if ((q_d(0) < -X_ALONG_ANGLE_MAX) || (q_d(0) > -X_ALONG_ANGLE_MIN)) {
+            cout << "[Leg" << (int)leg_type << "]: joint pos safety error(0)\n"; 
+            return false;
+        }
+    }
+    // phi1 and phi2
+    if ((fabs(q_d(1)) > Y_ALONG_ANGLE_LIMIT) || (fabs(q_d(2)) > Y_ALONG_ANGLE_LIMIT)) {
+        cout << "[Leg" << (int)leg_type << "]: joint pos safety error(1)\n"; 
+        return false;
+    }
+    // eta = phi2 - phi1
+    if (((q_d(2)-q_d(1)) > ETA_MAX) || ((q_d(2)-q_d(1)) < ETA_MIN)) {
+        cout << "[Leg" << (int)leg_type << "]: joint pos safety error(2)\n";  
+        return false;
+    }
 
     return true;
 }
@@ -210,12 +210,11 @@ void LegControl::_extract()
     // update motor states
     for (int i = 0; i < 3; i++){
         temp_vec[i] = _motors[i]->temp;
-        // from actual motor states to theoretical motor states
         tau_motor(i) = _motors[i]->tau;
         dq_motor(i) = _motors[i]->dq;
         q_motor(i) = _motors[i]->q;
     }
-    // Mapping
+    // from actual motor states to theoretical motor states
     q = _pos_inv_mapping * q_motor;
     dq = _vel_inv_mapping * dq_motor;
     tau = _vel_mapping.transpose() * tau_motor;

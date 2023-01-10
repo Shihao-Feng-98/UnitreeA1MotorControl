@@ -51,15 +51,19 @@ void* main_control_loop(void* argc)
     int sval; 
 
     double T_init = 3.;
-    double T_traj = 5.;
     double s = 0.;
     TrajGenerator traj_generator;
     vector<Vector3d> res_FR(3), res_FL(3), res_RR(3), res_RL(3);
-    Vector3d FR_init, FL_init, RR_init, RL_init;
-    FR_init = leg_control_FR->q;
-    FL_init = leg_control_FL->q;
-    RR_init = leg_control_RR->q;
-    RL_init = leg_control_RL->q;
+    Vector3d init_FR, init_FL, init_RR, init_RL;
+    Vector3d target_FR, target_FL, target_RR, target_RL;
+    init_FR = leg_control_FR->q;
+    init_FL = leg_control_FL->q;
+    init_RR = leg_control_RR->q;
+    init_RL = leg_control_RL->q;
+    target_FR << -60./180.*M_PI, -30./180.*M_PI, 30./180.*M_PI;
+    target_FL << 60./180.*M_PI, -30./180.*M_PI, 30./180.*M_PI;
+    target_RR << -60./180.*M_PI, -30./180.*M_PI, 30./180.*M_PI;
+    target_RL << 60./180.*M_PI, -30./180.*M_PI, 30./180.*M_PI;
 
     g_timer_total.reset();
     // init
@@ -71,16 +75,17 @@ void* main_control_loop(void* argc)
     
     // run task
     s = time_since_run/T_init;
-    res_FR = traj_generator.p2p_traj(FR_init, Vector3d::Zero(), T_init, s);
+    if (s > 1.) {s = 1.;}
+    res_FR = traj_generator.p2p_traj(init_FR, target_FR, T_init, s);
     dq_d_FR = res_FR[1];
     q_d_FR = res_FR[0];
-    res_FL = traj_generator.p2p_traj(FL_init, Vector3d::Zero(), T_init, s);
+    res_FL = traj_generator.p2p_traj(init_FL, target_FL, T_init, s);
     dq_d_FL = res_FL[1];
     q_d_FL = res_FL[0];
-    res_RR = traj_generator.p2p_traj(RR_init, Vector3d::Zero(), T_init, s);
+    res_RR = traj_generator.p2p_traj(init_RR, target_RR, T_init, s);
     dq_d_RR = res_RR[1];
     q_d_RR = res_RR[0];
-    res_RL = traj_generator.p2p_traj(RL_init, Vector3d::Zero(), T_init, s);
+    res_RL = traj_generator.p2p_traj(init_RL, target_RL, T_init, s);
     dq_d_RL = res_RL[1];
     q_d_RL = res_RL[0];
 
@@ -118,16 +123,16 @@ void* main_control_loop(void* argc)
         // run task
         s = time_since_run/T_init;
         if (s > 1.) {s = 1.;}
-        res_FR = traj_generator.p2p_traj(FR_init, Vector3d::Zero(), T_init, s);
+        res_FR = traj_generator.p2p_traj(init_FR, target_FR, T_init, s);
         dq_d_FR = res_FR[1];
         q_d_FR = res_FR[0];
-        res_FL = traj_generator.p2p_traj(FL_init, Vector3d::Zero(), T_init, s);
+        res_FL = traj_generator.p2p_traj(init_FL, target_FL, T_init, s);
         dq_d_FL = res_FL[1];
         q_d_FL = res_FL[0];
-        res_RR = traj_generator.p2p_traj(RR_init, Vector3d::Zero(), T_init, s);
+        res_RR = traj_generator.p2p_traj(init_RR, target_RR, T_init, s);
         dq_d_RR = res_RR[1];
         q_d_RR = res_RR[0];
-        res_RL = traj_generator.p2p_traj(RL_init, Vector3d::Zero(), T_init, s);
+        res_RL = traj_generator.p2p_traj(init_RL, target_RL, T_init, s);
         dq_d_RL = res_RL[1];
         q_d_RL = res_RL[0];
         // cout << "control_task: " << iteration << endl;
@@ -189,7 +194,7 @@ void* FL_control_loop(void* argc)
             pthread_cond_wait(&g_cond_ctrl_finished, &g_mutex_FL);
         }
         // run task
-        // leg_control_FL->run(Vector3d::Zero(), dq_d_FL, q_d_FL);
+        leg_control_FL->run(Vector3d::Zero(), dq_d_FL, q_d_FL);
  
         g_FL_finished = true;
         sem_wait(&g_sem); // -1
@@ -211,7 +216,7 @@ void* RR_control_loop(void* argc)
             pthread_cond_wait(&g_cond_ctrl_finished, &g_mutex_RR);
         }
         // run task
-        // leg_control_RR->run(Vector3d::Zero(), dq_d_RR, q_d_RR);
+        leg_control_RR->run(Vector3d::Zero(), dq_d_RR, q_d_RR);
 
         g_RR_finished = true;        
         sem_wait(&g_sem); // -1
@@ -232,7 +237,7 @@ void* RL_control_loop(void* argc)
             pthread_cond_wait(&g_cond_ctrl_finished, &g_mutex_RL);
         }
         // run task
-        // leg_control_RL->run(Vector3d::Zero(), dq_d_RL, q_d_RL);
+        leg_control_RL->run(Vector3d::Zero(), dq_d_RL, q_d_RL);
 
         g_RL_finished = true;
         sem_wait(&g_sem); // -1
@@ -255,15 +260,18 @@ int main(int argc, char** argv)
         return -2;
     }
 
-    SerialPort serial_port0("/dev/unitree_usb0");
-    SerialPort serial_port1("/dev/unitree_usb1");
-    SerialPort serial_port2("/dev/unitree_usb2");
-    SerialPort serial_port3("/dev/unitree_usb3");
-    vector<double> offset_vec{0.,0.,0.};
-    leg_control_FR = make_unique<LegControl>(&serial_port0, offset_vec, LegType::FR);
-    leg_control_FL = make_unique<LegControl>(&serial_port1, offset_vec, LegType::FL);
-    leg_control_RR = make_unique<LegControl>(&serial_port2, offset_vec, LegType::RR);
-    leg_control_RL = make_unique<LegControl>(&serial_port3, offset_vec, LegType::RL);
+    SerialPort serial_port_FR("/dev/unitree_usb1");
+    SerialPort serial_port_FL("/dev/unitree_usb3");
+    SerialPort serial_port_RR("/dev/unitree_usb2");
+    SerialPort serial_port_RL("/dev/unitree_usb0");
+    vector<double> offset_FR{OFFSET_FR0, OFFSET_FR1, OFFSET_FR2};
+    vector<double> offset_FL{OFFSET_FL0, OFFSET_FL1, OFFSET_FL2};
+    vector<double> offset_RR{OFFSET_RR0, OFFSET_RR1, OFFSET_RR2};
+    vector<double> offset_RL{OFFSET_RL0, OFFSET_RL1, OFFSET_RL2};
+    leg_control_FR = make_unique<LegControl>(&serial_port_FR, offset_FR, LegType::FR);
+    leg_control_FL = make_unique<LegControl>(&serial_port_FL, offset_FL, LegType::FL);
+    leg_control_RR = make_unique<LegControl>(&serial_port_RR, offset_RR, LegType::RR);
+    leg_control_RL = make_unique<LegControl>(&serial_port_RL, offset_RL, LegType::RL);
 
     sem_init(&g_sem, 0, 4);
 
