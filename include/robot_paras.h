@@ -1,7 +1,10 @@
+// Update time: 2023-01-11
+
 #ifndef ROBOT_PARAS_H
 #define ROBOT_PARAS_H
 
 #include <math.h>
+
 
 #define NUM_LEG 4
 #define NUM_DOF 12

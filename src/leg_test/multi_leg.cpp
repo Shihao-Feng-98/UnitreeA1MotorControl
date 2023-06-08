@@ -33,14 +33,6 @@ unique_ptr<LegControl> leg_control_FR, leg_control_FL, leg_control_RR, leg_contr
 Vector3d q_d_FR, q_d_FL, q_d_RR, q_d_RL;
 Vector3d dq_d_FR, dq_d_FL, dq_d_RR, dq_d_RL;
 
-Vector2d sin_func(const double &init, const double &T, double s)
-{
-    Vector2d res;
-    res(0) = init + M_PI/2 * sin(2*M_PI*s);
-    res(1) = M_PI/2 * 2*M_PI / T * cos(2*M_PI*s);
-    return res;
-}
-
 // ======== Main Control Thread Function ========  
 void* main_control_loop(void* argc)
 {   

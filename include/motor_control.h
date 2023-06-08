@@ -2,7 +2,7 @@
 Description: unitree motor control
 Email: 13247344844@163.com
 Author: Shihao Feng
-Update time: 2022-11-03
+Update time: 2023-01-11
 */
 
 #ifndef MOTOR_CONTROL_H

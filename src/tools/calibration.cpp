@@ -71,7 +71,7 @@ void* main_loop(void* argc)
                 timer_step.reset();
 
                 s = t_since_run/T;
-                res = p2p_traj(init, target+motor_offset, T, s);
+                res = p2p_traj(init, target, T, s);
                 motor->run(0., res(1), res(0));
 
                 t_since_run += dt;
@@ -112,8 +112,12 @@ int main(int argc, char **argv)
 
     int motor_id = atoi(argv[1]);
     motor_offset = atof(argv[2]);
-    SerialPort serial_port("/dev/unitree_usb3");
-    motor = make_unique<MotorControl>(&serial_port, motor_id, 0.);
+    SerialPort serial_port_FR("/dev/unitree_usb1");
+    // SerialPort serial_port_FL("/dev/unitree_usb3");
+    // SerialPort serial_port_RR("/dev/unitree_usb2");
+    // SerialPort serial_port_RL("/dev/unitree_usb0");
+
+    motor = make_unique<MotorControl>(&serial_port_FR, motor_id, motor_offset);
 
     // 主控制线程
     PeriodicRtTask *main_task = new PeriodicRtTask("[Main Control Thread]", 95, main_loop, 5);

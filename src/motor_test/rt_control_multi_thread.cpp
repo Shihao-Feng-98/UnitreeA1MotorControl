@@ -28,14 +28,14 @@ bool g_RR_finished = true;
 bool g_RL_finished = true;
 
 CTimer g_timer_total;
-unique_ptr<MotorControl> motor0, motor1, motor2, motor3;
-Vector2d res0, res1, res2, res3;
+unique_ptr<MotorControl> motor_FR, motor_FL, motor_RR, motor_RL;
+Vector2d res_FR, res_FL, res_RR, res_RL;
 
 Vector2d sin_func(const double &init, const double &T, double s)
 {
     Vector2d res;
-    res(0) = init + M_PI/2 * sin(2*M_PI*s);
-    res(1) = M_PI/2 * 2*M_PI / T * cos(2*M_PI*s);
+    res(0) = init + 5./180.*M_PI * sin(2*M_PI*s);
+    res(1) = 5./180.*M_PI * 2*M_PI / T * cos(2*M_PI*s);
     return res;
 }
 
@@ -43,18 +43,18 @@ Vector2d sin_func(const double &init, const double &T, double s)
 void* main_control_loop(void* argc)
 {   
     CTimer timer_step;
-    const double dt = 0.002;
+    const double dt = 0.004;
     double time_since_run = 0.;
     int iteration = 0;
     int sval; 
 
-    double T = 5.;
+    double T = 1.;
     double s = 0.;
-    double q0_init, q1_init, q2_init, q3_init;
-    q0_init = motor0->q;
-    q1_init = motor1->q;
-    q2_init = motor2->q;
-    q3_init = motor3->q;
+    double q_FR_init, q_FL_init, q_RR_init, q_RL_init;
+    q_FR_init = motor_FR->q;
+    q_FL_init = motor_FL->q;
+    q_RR_init = motor_RR->q;
+    q_RL_init = motor_RL->q;
     
     g_timer_total.reset();
     // init
@@ -66,12 +66,12 @@ void* main_control_loop(void* argc)
     pthread_mutex_lock(&g_mutex_RL); 
     
     // run task
-    s = time_since_run/T;
-    res0 = sin_func(q0_init, T, s);
-    res1 = sin_func(q1_init, T, s);
-    res2 = sin_func(q2_init, T, s);
-    res3 = sin_func(q3_init, T, s);
-    ++iteration;
+    s += dt/T;
+    s = fmod(s, 1.);
+    res_FR = sin_func(q_FR_init, T, s);
+    res_FL = sin_func(q_FL_init, T, s);
+    res_RR = sin_func(q_RR_init, T, s);
+    res_RL = sin_func(q_RL_init, T, s);
     time_since_run += dt;
     // cout << "control_task: " << iteration << endl;
     
@@ -86,14 +86,13 @@ void* main_control_loop(void* argc)
     pthread_mutex_unlock(&g_mutex_FR); 
 
     // run periodic task
-    while(time_since_run < T){
+    while(time_since_run < 180){
         // wait for child threads
         while(1){
             sem_getvalue(&g_sem, &sval);
             if (sval == 0) {break;}
         }
 
-        ++iteration;
         time_since_run += dt;
         // wait the rest of period (us)
         while (timer_step.end() < dt*1000*1000);
@@ -106,11 +105,12 @@ void* main_control_loop(void* argc)
         pthread_mutex_lock(&g_mutex_RL); 
 
         // run task
-        s = time_since_run/T;
-        res0 = sin_func(q0_init, T, s);
-        res1 = sin_func(q1_init, T, s);
-        res2 = sin_func(q2_init, T, s);
-        res3 = sin_func(q3_init, T, s);
+        s += dt/T;
+        s = fmod(s, 1.);
+        res_FR = sin_func(q_FR_init, T, s);
+        res_FL = sin_func(q_FL_init, T, s);
+        res_RR = sin_func(q_RR_init, T, s);
+        res_RL = sin_func(q_RL_init, T, s);
         // cout << "control_task: " << iteration << endl;
 
         // 通知所有子线程执行
@@ -132,7 +132,6 @@ void* main_control_loop(void* argc)
         pthread_mutex_unlock(&g_mutex_FR); 
     }
     g_stop_all = true;
-    cout << "Iteration: " << iteration << endl;
     cout << "Desired time: " << time_since_run << " s" << endl;
 
     return nullptr;
@@ -153,7 +152,7 @@ void* FR_control_loop(void* argc)
         }
 
         // run task
-        motor0->run(0., res0(1), res0(0));
+        motor_FR->run(0., res_FR(1), res_FR(0));
         // cout << "FR_task: " << ++iteration_FR << endl;
 
         // flag reset
@@ -165,7 +164,7 @@ void* FR_control_loop(void* argc)
     }
     // motor stop
     cout << "FR actual time: " << g_timer_total.end()/1000/1000 << " s\n";
-    motor0->stop();
+    motor_FR->stop();
     return nullptr;
 }
 
@@ -182,7 +181,7 @@ void* FL_control_loop(void* argc)
         }
 
         // run task
-        motor1->run(0., res1(1), res1(0));
+        motor_FL->run(0., res_FL(1), res_FL(0));
         // cout << "FL_task: " << ++iteration_FL << endl;
  
         g_FL_finished = true;
@@ -193,10 +192,9 @@ void* FL_control_loop(void* argc)
     }
     // motor stop
     cout << "FL actual time: " << g_timer_total.end()/1000/1000 << " s\n";
-    motor1->stop();
+    motor_FL->stop();
     return nullptr;
 }
-
 
 // ======== RR Control Thread Function ========  
 void* RR_control_loop(void* argc)
@@ -211,7 +209,7 @@ void* RR_control_loop(void* argc)
         }
 
         // run task
-        motor2->run(0., res2(1), res2(0));
+        motor_RR->run(0., res_RR(1), res_RR(0));
         // cout << "RR_task: " << ++iteration_RR << endl;
 
         g_RR_finished = true;
@@ -222,7 +220,7 @@ void* RR_control_loop(void* argc)
     }
     // motor stop
     cout << "RR actual time: " << g_timer_total.end()/1000/1000 << " s\n";
-    motor2->stop();
+    motor_RR->stop();
     return nullptr;
 }
 
@@ -239,7 +237,7 @@ void* RL_control_loop(void* argc)
         }
 
         // run task
-        motor3->run(0., res3(1), res3(0));
+        motor_RL->run(0., res_RL(1), res_RL(0));
         // cout << "RL_task: " << ++iteration_RL << endl;
 
         g_RL_finished = true;
@@ -250,7 +248,7 @@ void* RL_control_loop(void* argc)
     }
     // motor stop
     cout << "RL actual time: " << g_timer_total.end()/1000/1000 << " s\n";
-    motor3->stop();
+    motor_RL->stop();
     return nullptr;
 }
 
@@ -265,25 +263,24 @@ int main(int argc, char** argv)
         return -2;
     }
 
-    SerialPort serial_port0("/dev/unitree_usb0");
-    SerialPort serial_port1("/dev/unitree_usb1");
-    SerialPort serial_port2("/dev/unitree_usb2");
-    SerialPort serial_port3("/dev/unitree_usb3");
+    SerialPort serial_port_FR("/dev/unitree_usb1");
+    SerialPort serial_port_FL("/dev/unitree_usb3");
+    SerialPort serial_port_RR("/dev/unitree_usb2");
+    SerialPort serial_port_RL("/dev/unitree_usb0");
 
-    motor0 = make_unique<MotorControl>(&serial_port0, 1, 0.);
-    motor1 = make_unique<MotorControl>(&serial_port1, 2, 0.);
-    motor2 = make_unique<MotorControl>(&serial_port2, 1, 0.);
-    motor3 = make_unique<MotorControl>(&serial_port3, 2, 0.);
+    motor_FR = make_unique<MotorControl>(&serial_port_FR, 2, -0.6057);
+    motor_FL = make_unique<MotorControl>(&serial_port_FL, 2, -0.7474);
+    motor_RR = make_unique<MotorControl>(&serial_port_RR, 2, -0.8408);
+    motor_RL = make_unique<MotorControl>(&serial_port_RL, 2, -0.4856);
 
     sem_init(&g_sem, 0, 4);
 
     // creat threads
-    PeriodicRtTask *FR_control_task = new PeriodicRtTask("[FR Control Thread]", 95, FR_control_loop, 4);
-    PeriodicRtTask *FL_control_task = new PeriodicRtTask("[FL Control Thread]", 95, FL_control_loop, 5);
-    PeriodicRtTask *RR_control_task = new PeriodicRtTask("[RR Control Thread]", 95, RR_control_loop, 6);
-    PeriodicRtTask *RL_control_task = new PeriodicRtTask("[RL Control Thread]", 95, RL_control_loop, 7);
-    PeriodicRtTask *main_control_task = new PeriodicRtTask("[Main Control Thread]", 95, main_control_loop, 3);
-
+    PeriodicRtTask *FR_control_task = new PeriodicRtTask("[FR Control Thread]", 99, FR_control_loop, 4);
+    PeriodicRtTask *FL_control_task = new PeriodicRtTask("[FL Control Thread]", 99, FL_control_loop, 5);
+    PeriodicRtTask *RR_control_task = new PeriodicRtTask("[RR Control Thread]", 99, RR_control_loop, 6);
+    PeriodicRtTask *RL_control_task = new PeriodicRtTask("[RL Control Thread]", 99, RL_control_loop, 7);
+    PeriodicRtTask *main_control_task = new PeriodicRtTask("[Main Control Thread]", 99, main_control_loop, 3);
     sleep(1); 
 
     // join threads

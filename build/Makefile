@@ -111,84 +111,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named single_leg
+# Target rules for targets named calibration
 
 # Build rule for target.
-single_leg: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 single_leg
-.PHONY : single_leg
+calibration: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 calibration
+.PHONY : calibration
 
 # fast build rule for target.
-single_leg/fast:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/build
-.PHONY : single_leg/fast
+calibration/fast:
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/build
+.PHONY : calibration/fast
 
 #=============================================================================
-# Target rules for targets named multi_leg
+# Target rules for targets named changeID
 
 # Build rule for target.
-multi_leg: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 multi_leg
-.PHONY : multi_leg
+changeID: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 changeID
+.PHONY : changeID
 
 # fast build rule for target.
-multi_leg/fast:
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/build
-.PHONY : multi_leg/fast
-
-src/leg_test/multi_leg.o: src/leg_test/multi_leg.cpp.o
-
-.PHONY : src/leg_test/multi_leg.o
-
-# target to build an object file
-src/leg_test/multi_leg.cpp.o:
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/leg_test/multi_leg.cpp.o
-.PHONY : src/leg_test/multi_leg.cpp.o
-
-src/leg_test/multi_leg.i: src/leg_test/multi_leg.cpp.i
-
-.PHONY : src/leg_test/multi_leg.i
-
-# target to preprocess a source file
-src/leg_test/multi_leg.cpp.i:
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/leg_test/multi_leg.cpp.i
-.PHONY : src/leg_test/multi_leg.cpp.i
-
-src/leg_test/multi_leg.s: src/leg_test/multi_leg.cpp.s
-
-.PHONY : src/leg_test/multi_leg.s
-
-# target to generate assembly for a file
-src/leg_test/multi_leg.cpp.s:
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/leg_test/multi_leg.cpp.s
-.PHONY : src/leg_test/multi_leg.cpp.s
-
-src/leg_test/single_leg.o: src/leg_test/single_leg.cpp.o
-
-.PHONY : src/leg_test/single_leg.o
-
-# target to build an object file
-src/leg_test/single_leg.cpp.o:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/leg_test/single_leg.cpp.o
-.PHONY : src/leg_test/single_leg.cpp.o
-
-src/leg_test/single_leg.i: src/leg_test/single_leg.cpp.i
-
-.PHONY : src/leg_test/single_leg.i
-
-# target to preprocess a source file
-src/leg_test/single_leg.cpp.i:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/leg_test/single_leg.cpp.i
-.PHONY : src/leg_test/single_leg.cpp.i
-
-src/leg_test/single_leg.s: src/leg_test/single_leg.cpp.s
-
-.PHONY : src/leg_test/single_leg.s
-
-# target to generate assembly for a file
-src/leg_test/single_leg.cpp.s:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/leg_test/single_leg.cpp.s
-.PHONY : src/leg_test/single_leg.cpp.s
+changeID/fast:
+	$(MAKE) -f CMakeFiles/changeID.dir/build.make CMakeFiles/changeID.dir/build
+.PHONY : changeID/fast
 
 src/motor_control.o: src/motor_control.cpp.o
 
@@ -196,8 +142,7 @@ src/motor_control.o: src/motor_control.cpp.o
 
 # target to build an object file
 src/motor_control.cpp.o:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/motor_control.cpp.o
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/motor_control.cpp.o
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/motor_control.cpp.o
 .PHONY : src/motor_control.cpp.o
 
 src/motor_control.i: src/motor_control.cpp.i
@@ -206,8 +151,7 @@ src/motor_control.i: src/motor_control.cpp.i
 
 # target to preprocess a source file
 src/motor_control.cpp.i:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/motor_control.cpp.i
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/motor_control.cpp.i
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/motor_control.cpp.i
 .PHONY : src/motor_control.cpp.i
 
 src/motor_control.s: src/motor_control.cpp.s
@@ -216,8 +160,7 @@ src/motor_control.s: src/motor_control.cpp.s
 
 # target to generate assembly for a file
 src/motor_control.cpp.s:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/motor_control.cpp.s
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/motor_control.cpp.s
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/motor_control.cpp.s
 .PHONY : src/motor_control.cpp.s
 
 src/periodic_rt_task.o: src/periodic_rt_task.cpp.o
@@ -226,8 +169,7 @@ src/periodic_rt_task.o: src/periodic_rt_task.cpp.o
 
 # target to build an object file
 src/periodic_rt_task.cpp.o:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/periodic_rt_task.cpp.o
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/periodic_rt_task.cpp.o
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/periodic_rt_task.cpp.o
 .PHONY : src/periodic_rt_task.cpp.o
 
 src/periodic_rt_task.i: src/periodic_rt_task.cpp.i
@@ -236,8 +178,7 @@ src/periodic_rt_task.i: src/periodic_rt_task.cpp.i
 
 # target to preprocess a source file
 src/periodic_rt_task.cpp.i:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/periodic_rt_task.cpp.i
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/periodic_rt_task.cpp.i
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/periodic_rt_task.cpp.i
 .PHONY : src/periodic_rt_task.cpp.i
 
 src/periodic_rt_task.s: src/periodic_rt_task.cpp.s
@@ -246,39 +187,62 @@ src/periodic_rt_task.s: src/periodic_rt_task.cpp.s
 
 # target to generate assembly for a file
 src/periodic_rt_task.cpp.s:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/periodic_rt_task.cpp.s
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/periodic_rt_task.cpp.s
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/periodic_rt_task.cpp.s
 .PHONY : src/periodic_rt_task.cpp.s
 
-src/traj_generator.o: src/traj_generator.cpp.o
+src/tools/calibration.o: src/tools/calibration.cpp.o
 
-.PHONY : src/traj_generator.o
+.PHONY : src/tools/calibration.o
 
 # target to build an object file
-src/traj_generator.cpp.o:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/traj_generator.cpp.o
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/traj_generator.cpp.o
-.PHONY : src/traj_generator.cpp.o
+src/tools/calibration.cpp.o:
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/tools/calibration.cpp.o
+.PHONY : src/tools/calibration.cpp.o
 
-src/traj_generator.i: src/traj_generator.cpp.i
+src/tools/calibration.i: src/tools/calibration.cpp.i
 
-.PHONY : src/traj_generator.i
+.PHONY : src/tools/calibration.i
 
 # target to preprocess a source file
-src/traj_generator.cpp.i:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/traj_generator.cpp.i
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/traj_generator.cpp.i
-.PHONY : src/traj_generator.cpp.i
+src/tools/calibration.cpp.i:
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/tools/calibration.cpp.i
+.PHONY : src/tools/calibration.cpp.i
 
-src/traj_generator.s: src/traj_generator.cpp.s
+src/tools/calibration.s: src/tools/calibration.cpp.s
 
-.PHONY : src/traj_generator.s
+.PHONY : src/tools/calibration.s
 
 # target to generate assembly for a file
-src/traj_generator.cpp.s:
-	$(MAKE) -f CMakeFiles/single_leg.dir/build.make CMakeFiles/single_leg.dir/src/traj_generator.cpp.s
-	$(MAKE) -f CMakeFiles/multi_leg.dir/build.make CMakeFiles/multi_leg.dir/src/traj_generator.cpp.s
-.PHONY : src/traj_generator.cpp.s
+src/tools/calibration.cpp.s:
+	$(MAKE) -f CMakeFiles/calibration.dir/build.make CMakeFiles/calibration.dir/src/tools/calibration.cpp.s
+.PHONY : src/tools/calibration.cpp.s
+
+src/tools/changeID.o: src/tools/changeID.cpp.o
+
+.PHONY : src/tools/changeID.o
+
+# target to build an object file
+src/tools/changeID.cpp.o:
+	$(MAKE) -f CMakeFiles/changeID.dir/build.make CMakeFiles/changeID.dir/src/tools/changeID.cpp.o
+.PHONY : src/tools/changeID.cpp.o
+
+src/tools/changeID.i: src/tools/changeID.cpp.i
+
+.PHONY : src/tools/changeID.i
+
+# target to preprocess a source file
+src/tools/changeID.cpp.i:
+	$(MAKE) -f CMakeFiles/changeID.dir/build.make CMakeFiles/changeID.dir/src/tools/changeID.cpp.i
+.PHONY : src/tools/changeID.cpp.i
+
+src/tools/changeID.s: src/tools/changeID.cpp.s
+
+.PHONY : src/tools/changeID.s
+
+# target to generate assembly for a file
+src/tools/changeID.cpp.s:
+	$(MAKE) -f CMakeFiles/changeID.dir/build.make CMakeFiles/changeID.dir/src/tools/changeID.cpp.s
+.PHONY : src/tools/changeID.cpp.s
 
 # Help Target
 help:
@@ -288,23 +252,20 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... single_leg"
-	@echo "... multi_leg"
-	@echo "... src/leg_test/multi_leg.o"
-	@echo "... src/leg_test/multi_leg.i"
-	@echo "... src/leg_test/multi_leg.s"
-	@echo "... src/leg_test/single_leg.o"
-	@echo "... src/leg_test/single_leg.i"
-	@echo "... src/leg_test/single_leg.s"
+	@echo "... calibration"
+	@echo "... changeID"
 	@echo "... src/motor_control.o"
 	@echo "... src/motor_control.i"
 	@echo "... src/motor_control.s"
 	@echo "... src/periodic_rt_task.o"
 	@echo "... src/periodic_rt_task.i"
 	@echo "... src/periodic_rt_task.s"
-	@echo "... src/traj_generator.o"
-	@echo "... src/traj_generator.i"
-	@echo "... src/traj_generator.s"
+	@echo "... src/tools/calibration.o"
+	@echo "... src/tools/calibration.i"
+	@echo "... src/tools/calibration.s"
+	@echo "... src/tools/changeID.o"
+	@echo "... src/tools/changeID.i"
+	@echo "... src/tools/changeID.s"
 .PHONY : help
 
 
